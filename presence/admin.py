@@ -1,4 +1,4 @@
-from MakerBarManager.presence.models import UserProfilePresence, Device
+from MakerBarManager.presence.models import UserProfilePresence, Device,UsageLog
 from django.contrib import admin
 
 class DeviceInline(admin.TabularInline):
@@ -11,5 +11,9 @@ class UserProfilePresenceAdmin(admin.ModelAdmin):
     #]
     inlines = [DeviceInline]
 
+class UsageLogAdmin(admin.ModelAdmin):
+    fields=['user','device','use_date']
+    list_display = ('user','device','use_date')
 
 admin.site.register(UserProfilePresence,UserProfilePresenceAdmin)
+admin.site.register(UsageLog,UsageLogAdmin)

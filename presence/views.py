@@ -1,36 +1,97 @@
-from datetime import datetime
 from django.shortcuts import render
 from django.conf import settings
-import paramiko, base64, pickle, os
-from MakerBarManager.presence.models import UserProfilePresence, Device
+import paramiko, base64, pickle, os, datetime
+from datetime import datetime, timedelta
+from MakerBarManager.presence.models import UserProfilePresence, Device, UsageLog
 from paramiko.ssh_exception import AuthenticationException
 
-def members_connected(request):
+def members_connected(request,lookback=0):
+    int_lookback=int(lookback)
+    if int_lookback>0 or int_lookback<=1440*2:
+        #Check the presence logs back lookback number of minutes for activity
+        s_dte=datetime.today()
+        e_dte=s_dte+timedelta(minutes=-int_lookback)
+        logs = UsageLog.objects.filter(use_date__lte=s_dte,use_date__gte=e_dte)
+        output = ''
+        attendance=set()
+        for log in logs:
+            attendance.add(log.user.user)
+
+
+        for u in attendance:
+            output += u.username + '\n'
+
+        if output == '':
+            status_code = 204 # No content
+        else:
+            status_code=200 # Content
+    else:
+        #Don't check the cached results in the database
+        rsa_key=settings.MAKERBAR_ROUTER_RSA_KEY
+        router_address=settings.MAKERBAR_ROUTER_ADDRESS
+        router_port = settings.MAKERBAR_ROUTER_PORT
+        stdin, stdout, stderr =get_router_mac_addresses(rsa_key,router_address,router_port)
+
+        attendance = set()
+        for line in stdout:
+            router_mac = line[10:27]
+            try:
+                e = UserProfilePresence.objects.get(device__mac=router_mac)
+                attendance.add(e.user)
+            except UserProfilePresence.DoesNotExist:
+                pass
+            except Device.DoesNotExist:
+                pass
+
+        output = ''
+        for u in attendance:
+            output += u.username + '\n'
+            status_code=200 # Content
+        if output == '':
+            status_code = 204 # No content
+
+    return render(request, 'members_connected.html', {'user_list':output},content_type="text/plain",status=status_code)
+
+def c_members_connected(request):
+    s_dte=datetime.now
+    e_dte=s_dte-datetime.timedelta(hour=1)
+    logs = UsageLog.objects.filter(use_date__range=[s_dte,e_dte])
+    output = ''
+    for log in logs:
+        output += log.user.username + '\n'
+
+    if output == '':
+        status_code = 204 # No content
+    else:
+        status_code=200 # Content
+
+    return render(request, 'members_connected.html', {'user_list':output},content_type="text/plain",status=status_code)
+
+def unknown_connected(request):
 
     rsa_key=settings.MAKERBAR_ROUTER_RSA_KEY
     router_address=settings.MAKERBAR_ROUTER_ADDRESS
     router_port = settings.MAKERBAR_ROUTER_PORT
     stdin, stdout, stderr =get_router_mac_addresses(rsa_key,router_address,router_port)
 
-    attendance = set()
+    unknown = set()
     for line in stdout:
         router_mac = line[10:27]
         try:
             e = UserProfilePresence.objects.get(device__mac=router_mac)
-            attendance.add(e.user)
         except UserProfilePresence.DoesNotExist:
-            pass
+            unknown.add(router_mac)
         except Device.DoesNotExist:
             pass
 
     output = ''
-    for u in attendance:
-        output += u.username + '\n'
+    for u in unknown:
+        output += u + '\n'
         status_code=200 # Content
     if output == '':
         status_code = 204 # No content
 
-    return render(request, 'members_connected.html', {'user_list':output},content_type="text/plain",status=status_code)
+    return render(request, 'unknown_connected.html', {'unknown_connected_list':output},content_type="text/plain",status=status_code)
 
 def who_is_connected(request):
     rsa_key=settings.MAKERBAR_ROUTER_RSA_KEY

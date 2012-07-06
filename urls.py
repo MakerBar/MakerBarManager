@@ -6,9 +6,11 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     # Examples:
-    url(r'^SupplyRequest/$', 'MakerBarManager.SupplyRequest.views.home', name='home'),
+    #url(r'^SupplyRequest/$', 'MakerBarManager.SupplyRequest.views.home', name='home'),
     url(r'^presence/members_connected/$', 'MakerBarManager.presence.views.members_connected', name='members_connected'),
+    url(r'^presence/members_connected/(?P<lookback>\w{1,50})/$', 'MakerBarManager.presence.views.members_connected', name='members_connected'),
     url(r'^presence/who_is_connected/$', 'MakerBarManager.presence.views.who_is_connected', name='who_is_connected'),
+    url(r'^presence/unknown_connected/$', 'MakerBarManager.presence.views.unknown_connected', name='unknown_connected'),
     # url(r'^MakerBarManager/', include('MakerBarManager.foo.urls')),
 
     # Uncomment the admin/doc line below to enable admin documentation:
