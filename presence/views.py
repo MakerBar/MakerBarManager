@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 from django.shortcuts import render
 from django.conf import settings
 import paramiko, base64, pickle, os, datetime
@@ -68,30 +69,59 @@ def c_members_connected(request):
     return render(request, 'members_connected.html', {'user_list':output},content_type="text/plain",status=status_code)
 
 def unknown_connected(request):
+=======
+from datetime import datetime
+from django.shortcuts import render
+from django.conf import settings
+import paramiko, base64, pickle, os
+from MakerBarManager.presence.models import UserProfilePresence, Device
+from paramiko.ssh_exception import AuthenticationException
+
+def members_connected(request):
+>>>>>>> 6ea3eac18435fdb17b193b32605f3e7bee2b0201
 
     rsa_key=settings.MAKERBAR_ROUTER_RSA_KEY
     router_address=settings.MAKERBAR_ROUTER_ADDRESS
     router_port = settings.MAKERBAR_ROUTER_PORT
     stdin, stdout, stderr =get_router_mac_addresses(rsa_key,router_address,router_port)
 
+<<<<<<< HEAD
     unknown = set()
+=======
+    attendance = set()
+>>>>>>> 6ea3eac18435fdb17b193b32605f3e7bee2b0201
     for line in stdout:
         router_mac = line[10:27]
         try:
             e = UserProfilePresence.objects.get(device__mac=router_mac)
+<<<<<<< HEAD
         except UserProfilePresence.DoesNotExist:
             unknown.add(router_mac)
+=======
+            attendance.add(e.user)
+        except UserProfilePresence.DoesNotExist:
+            pass
+>>>>>>> 6ea3eac18435fdb17b193b32605f3e7bee2b0201
         except Device.DoesNotExist:
             pass
 
     output = ''
+<<<<<<< HEAD
     for u in unknown:
         output += u + '\n'
+=======
+    for u in attendance:
+        output += u.username + '\n'
+>>>>>>> 6ea3eac18435fdb17b193b32605f3e7bee2b0201
         status_code=200 # Content
     if output == '':
         status_code = 204 # No content
 
+<<<<<<< HEAD
     return render(request, 'unknown_connected.html', {'unknown_connected_list':output},content_type="text/plain",status=status_code)
+=======
+    return render(request, 'members_connected.html', {'user_list':output},content_type="text/plain",status=status_code)
+>>>>>>> 6ea3eac18435fdb17b193b32605f3e7bee2b0201
 
 def who_is_connected(request):
     rsa_key=settings.MAKERBAR_ROUTER_RSA_KEY

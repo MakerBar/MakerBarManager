@@ -1,4 +1,4 @@
-from MakerBarManager.presence.models import UserProfilePresence, Device,UsageLog
+from MakerBarManager.presence.models import UserProfilePresence, Device, UsageLog
 from django.contrib import admin
 
 class DeviceInline(admin.TabularInline):

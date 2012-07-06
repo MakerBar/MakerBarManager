@@ -105,7 +105,13 @@ ROOT_URLCONF = 'MakerBarManager.urls'
 AUTH_PROFILE_MODULE = 'SupplyRequest.UserProfile'
 
 TEMPLATE_DIRS = (
+<<<<<<< HEAD
     '/home/MakerBar/MakerBarManager/templates',
+=======
+    # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
+    # Always use forward slashes, even on Windows.
+    # Don't forget to use absolute paths, not relative paths.
+>>>>>>> 6ea3eac18435fdb17b193b32605f3e7bee2b0201
 )
 
 INSTALLED_APPS = (
