@@ -1,0 +1,22 @@
+<h1>Supply Request</h1>
+
+{% if requestor %}
+    <h3>Welcome {{requestor}}!</h3>
+
+    <form action="/Supply_Request/" method="post">
+    {% csrf_token %}
+
+    <input type="text" name="dte" id=""dte"">
+
+{% else %}
+    <h3>Please login.</h3>
+{% endif %}
+
+{% if order_requests %}
+    <ul>
+    {% for request in order_requests %}
+        <li>{{request}}</li>
+    {% endfor %}
+{% else %}
+    <p>No requests!</p>
+{% endif %}

@@ -1,12 +1,14 @@
 from django.db import models
 from django.contrib.auth.models import User
-<<<<<<< HEAD
 from datetime import datetime
-=======
->>>>>>> 6ea3eac18435fdb17b193b32605f3e7bee2b0201
 
 class UserProfilePresence(models.Model):
     user = models.OneToOneField(User,unique=True)
+    #uid = models.IntegerField('UID')
+    #membership_expiration=models.DateTimeField()
+    meetup_id = models.CharField('Meetup ID',max_length=10)
+    four_square_token = models.CharField('Foursquare Token',max_length=50)
+    facebook_token = models.CharField('Facebook Token',max_length=50)
 
     def __unicode__(self):
         return self.user.username
@@ -17,7 +19,6 @@ class Device(models.Model):
     mac=models.CharField('MAC Address',max_length=17)
 
     def __unicode__(self):
-<<<<<<< HEAD
         return self.name
 
 class UsageLog(models.Model):
@@ -27,6 +28,3 @@ class UsageLog(models.Model):
 
 #   def __unicode__(self):
 #        return '%s logged in at %s with %s' % (self.user.username,str(self.dateTime),self.device.name)
-=======
-        return self.name
->>>>>>> 6ea3eac18435fdb17b193b32605f3e7bee2b0201

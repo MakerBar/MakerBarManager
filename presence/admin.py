@@ -1,4 +1,4 @@
-from MakerBarManager.presence.models import UserProfilePresence, Device, UsageLog
+from MakerBarManager.presence.models import UserProfilePresence, Device,UsageLog
 from django.contrib import admin
 
 class DeviceInline(admin.TabularInline):
@@ -6,9 +6,10 @@ class DeviceInline(admin.TabularInline):
     extra = 3
 
 class UserProfilePresenceAdmin(admin.ModelAdmin):
-    #fieldsets = [
-    #    ('Request Information' , {'fields': ['username']}),
-    #]
+    fieldsets = [
+        ('User' , {'fields': ['user']}),
+        ('Social Media Tokens'   ,{'fields':['meetup_id','four_square_token','facebook_token']}),
+    ]
     inlines = [DeviceInline]
 
 class UsageLogAdmin(admin.ModelAdmin):

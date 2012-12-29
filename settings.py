@@ -1,3 +1,4 @@
+import sys
 # Django settings for MakerBarManager project.
 
 DEBUG = True
@@ -12,13 +13,20 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'MakerBar$Test4',                      # Or path to database file if using sqlite3.
+        'NAME': 'MakerBar$Prod',                      # Or path to database file if using sqlite3.
         'USER': 'MakerBar',                      # Not used with sqlite3.
         'PASSWORD': 'sqrt(mile^2)',                  # Not used with sqlite3.
         'HOST': 'mysql.server',                      # Set to empty string for localhost. Not used with sqlite3.
         'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
     }
 }
+
+#Uses sqlite for testing
+if 'test' in sys.argv:
+    DATABASES['default']={
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'test_mydatabase'
+    }
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -105,13 +113,7 @@ ROOT_URLCONF = 'MakerBarManager.urls'
 AUTH_PROFILE_MODULE = 'SupplyRequest.UserProfile'
 
 TEMPLATE_DIRS = (
-<<<<<<< HEAD
     '/home/MakerBar/MakerBarManager/templates',
-=======
-    # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
-    # Always use forward slashes, even on Windows.
-    # Don't forget to use absolute paths, not relative paths.
->>>>>>> 6ea3eac18435fdb17b193b32605f3e7bee2b0201
 )
 
 INSTALLED_APPS = (
@@ -127,6 +129,9 @@ INSTALLED_APPS = (
     # 'django.contrib.admindocs',
     'MakerBarManager.SupplyRequest',
     'MakerBarManager.presence',
+    'MakerBarManager.Social_Media_Tracker',
+    'MakerBarManager.EZTweet',
+    'MakerBarManager.SE_EZTweet',
 )
 
 # A sample logging configuration. The only tangible logging
@@ -153,7 +158,6 @@ LOGGING = {
 }
 
 STATICFILES_DIRS = ('/home/MakerBar/MakerBarManager/static',)
-
-MAKERBAR_ROUTER_RSA_KEY ='AAAAB3NzaC1yc2EAAAADAQABAAAAgwCjvHkbqL/V0ytnfa5pIak7bxBfj6nF4S7vy51ZG8LlWYAXcQ9WGfUGfhG+l1GW9hPeQzQbeRyNiQM+ufue/M9+JKCXTIugksAnN3W+NV/DeDcq9sKR9MiiNH3ZeNtGSyPGYjcLVmK6aSVTUoEO2yRrha9fiWBy5hb93UdmJX+QguC9'
+MAKERBAR_ROUTER_RSA_KEY ='AAAAB3NzaC1yc2EAAAADAQABAAAAgwDkp6b0Z+u4RyDkWWlARjJpMeefYEohC8oChU/CJhjrELaIpWvUpZdyeFMJBJAi9+hf+wgJmeMGSHJ3yHbvcUlqAgP6AwuNnB1TSBX1Ltmcxx9YpYTAaNjgmSQg55pwuFz7TGvUov/J3KZdGX5JHnsjKP3FSI21vgo6UDlXi4YFfceZ'
 MAKERBAR_ROUTER_ADDRESS ='makerbar.berthartm.org'
 MAKERBAR_ROUTER_PORT = 2222

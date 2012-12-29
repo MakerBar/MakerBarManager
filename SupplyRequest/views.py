@@ -1,6 +1,10 @@
 from datetime import datetime
 
-from django.shortcuts import render
+from MakerBarManager.SupplyRequest.models import Order_Request
 
-def home(request):
-    return render(request, 'home.html', {'right_now':datetime.utcnow()})
+from django.shortcuts import render_to_response
+
+def order_request(request):
+    requestor = 'eabraham'
+    order_requests=Order_Request.objects.all()
+    return render_to_response('index.html',{'order_requests':order_requests,'requestor':requestor})
